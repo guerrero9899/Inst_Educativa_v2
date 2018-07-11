@@ -3,7 +3,6 @@ package controller.users;
 import java.io.IOException;
 import java.util.*;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,8 +23,8 @@ public class UsersControllerIndex extends HttpServlet {
 			if(Security.garantyAccess(req.getServletPath(), pm)){
 				throw new Exception("Su usuario no tiene permisos suficientes.");
 			}
-			Query query = pm.newQuery(User.class);
-			List<User> User = (List<User>) query.execute();
+			String query = "select from "+User.class.getName()+" order by email";
+			List<User> User = (List<User>) pm.newQuery(query).execute();
 			req.setAttribute("showFull",User);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/Views/Users/viewFull.jsp");
 			rd.forward(req, resp);

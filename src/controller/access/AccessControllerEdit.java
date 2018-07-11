@@ -28,6 +28,12 @@ public class AccessControllerEdit extends HttpServlet {
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/Views/Access/edit.jsp");
 				rd.forward(req, resp);
 			} else {
+				if(c.getRoleId()==null){
+					c.setRoleId(Long.parseLong(req.getParameter("roleId")));
+				}
+				if(c.getResourceId()==null){
+					c.setResourceId(Long.parseLong(req.getParameter("resourceId")));
+				}
 				c.setStatus(Boolean.parseBoolean(stat));
 				resp.sendRedirect("/access");
 			}

@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@page import="model.entity.*"%>
 <%@page import="controller.PMF"%>
-<%@page import="javax.jdo.Query"%>
 <%@page import="javax.jdo.PersistenceManager"%>
 <%@page import="java.util.List"%>
 
@@ -196,17 +195,19 @@
 				<%
 					if (current.getRoleId() == null) {
 						PersistenceManager pm = PMF.get().getPersistenceManager();
-						Query query = pm.newQuery(Role.class);
-						List<Role> roles = (List<Role>) query.execute();
+						String query = "select from " + Role.class.getName();
+						List<Role> roles = (List<Role>) pm.newQuery(query).execute();
 				%>
 				<div class="form-group">
 					<label>Este cuadro solo aparecera una vez debido a que se
 						elimino su rol</label> <select name="roleId">
 						<%
-							for (int i = 0; i < roles.size(); i++) {
+							if (roles.size() > 0) {
+									for (int i = 0; i < roles.size(); i++) {
 						%>
 						<option value="<%=roles.get(i).getId()%>"><%=roles.get(i).getName()%></option>
 						<%
+									}
 							}
 						%>
 					</select>

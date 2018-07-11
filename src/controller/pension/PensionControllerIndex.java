@@ -22,7 +22,7 @@ public class PensionControllerIndex extends HttpServlet {
 			if(Security.garantyAccess(req.getServletPath(), pm)){
 				throw new Exception("Su usuario no tiene permisos suficientes.");
 			}
-			String query = " select from " + Pension.class.getName();
+			String query = " select from " + Pension.class.getName()+" order by name";
 			List<Pension> Pensions = (List<Pension>) pm.newQuery(query).execute();
 			req.setAttribute("showFull", Pensions);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/Views/Pensions/viewFull.jsp");

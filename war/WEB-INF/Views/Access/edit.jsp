@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="model.entity.Access"%>
+<%@page import="model.entity.*"%>
+<%@page import="controller.PMF"%>
+<%@page import="javax.jdo.PersistenceManager"%>
+<%@page import="java.util.List"%>
 <%
 	Access current = (Access) request.getAttribute("access");
 	boolean stat = current.isStatus();
@@ -183,11 +186,55 @@
 	</nav>
 	<div class="content-wrapper">
 		<div class="container-fluid">
-			<form action="/user/edit" method="get"
+			<form action="/access/edit" method="get"
 				class="form-horizontal text-left">
 				<div class="form-group">
 					<input type="hidden" name="ID" value="<%=current.getId()%>">
 				</div>
+				<%
+					if (current.getRoleId() == null) {
+						PersistenceManager pm = PMF.get().getPersistenceManager();
+						String query = "select from " + Role.class.getName();
+						List<Role> roles = (List<Role>) pm.newQuery(query).execute();
+				%>
+				<div class="form-group">
+					<label>Este cuadro solo aparecera una vez debido a que se
+						elimino su rol</label> <select name="roleId">
+						<%
+							if (roles.size() > 0) {
+									for (int i = 0; i < roles.size(); i++) {
+						%>
+						<option value="<%=roles.get(i).getId()%>"><%=roles.get(i).getName()%></option>
+						<%
+									}
+							}
+						%>
+					</select>
+				</div>
+				<%
+					}
+					if (current.getResourceId() == null) {
+						PersistenceManager pm = PMF.get().getPersistenceManager();
+						String query = "select from " + Resource.class.getName();
+						List<Resource> resources = (List<Resource>) pm.newQuery(query).execute();
+				%>
+				<div class="form-group">
+					<label>Este cuadro solo aparecera una vez debido a que se
+						elimino su resource</label> <select name="resourceId">
+						<%
+							if (resources.size() > 0) {
+									for (int i = 0; i < resources.size(); i++) {
+						%>
+						<option value="<%=resources.get(i).getId()%>"><%=resources.get(i).getName()%></option>
+						<%
+							}
+								}
+						%>
+					</select>
+				</div>
+				<%
+					}
+				%>
 				<div class="form-group">
 					<label class="control-label col-sm-2">Status</label> <input
 						type="radio" name="stat" value="<%out.print(stat);%>" checked>

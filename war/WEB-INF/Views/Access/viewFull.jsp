@@ -206,12 +206,12 @@
 							<tbody>
 								<%
 									for (int idx = 0; idx < accesss.size(); idx++) {
-										Access t = (Access) accesss.get(idx);
+										Access t = accesss.get(idx);
 								%>
 								<tr>
 									<td><%=t.getId()%></td>
-									<td><%=pm.getObjectById(Role.class, t.getRoleId()).getName()%></td>
-									<td><%=pm.getObjectById(Resource.class, t.getResourceId()).getName()%></td>
+									<td><%=t.getRoleId()%></td>
+									<td><%=t.getResourceId()%></td>
 									<td><%=t.getDate()%></td>
 									<td><%=t.isStatus()%></td>
 									<td><a href="/access/view?ID=<%=t.getId()%>">View </a><a

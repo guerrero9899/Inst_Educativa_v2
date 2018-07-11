@@ -3,7 +3,6 @@ package controller.roles;
 import java.io.IOException;
 import java.util.*;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +23,8 @@ public class RolesControllerIndex extends HttpServlet {
 			if(Security.garantyAccess(req.getServletPath(), pm)){
 				throw new Exception("Su usuario no tiene permisos suficientes.");
 			}
-			Query query = pm.newQuery(Role.class);
-			query.setRange(0, 20);
-			List<Role> roles = (List<Role>) query.execute();
+			String query = "select from "+Role.class.getName()+" order by name";
+			List<Role> roles = (List<Role>) pm.newQuery(query).execute();
 			req.setAttribute("showFull", roles);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/Views/Roles/viewFull.jsp");
 			rd.forward(req, resp);

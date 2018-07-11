@@ -3,7 +3,6 @@ package controller.resources;
 import java.io.IOException;
 import java.util.*;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,8 +23,8 @@ public class ResourceControllerIndex extends HttpServlet {
 			if(Security.garantyAccess(req.getServletPath(), pm)){
 				throw new Exception("Su usuario no tiene permisos suficientes.");
 			}
-			Query query = pm.newQuery(Resource.class);
-			List<Resource> Resource = (List<Resource>) query.execute();
+			String query = "select from "+Resource.class.getName()+" order by name";
+			List<Resource> Resource = (List<Resource>) pm.newQuery(query).execute();
 			req.setAttribute("showFull", Resource);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/Views/Resources/viewFull.jsp");
 			rd.forward(req, resp);

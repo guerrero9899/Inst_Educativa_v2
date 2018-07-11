@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import controller.PMF;
 import controller.Security;
-import model.entity.User;
+import model.entity.*;
 
 
 @SuppressWarnings("serial")

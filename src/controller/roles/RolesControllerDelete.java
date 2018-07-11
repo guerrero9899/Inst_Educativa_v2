@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.PMF;
 import controller.Security;
+import model.entity.Access;
 import model.entity.Role;
 import model.entity.User;
 
@@ -31,6 +32,11 @@ public class RolesControllerDelete extends HttpServlet {
 			List<User> Users = (List<User>) pm.newQuery(query).execute();
 			for (int i = 0; i < Users.size(); i++) {
 				Users.get(i).setRole(null);
+			}
+			query = "select from "+Access.class.getName()+" where roleId =="+id+"";
+			List<Access> Accesses = (List<Access>) pm.newQuery(query).execute();
+			for (int i = 0; i < Accesses.size(); i++) {
+				Accesses.get(i).setResourceId(null);
 			}
 			Role c=pm.getObjectById(Role.class,id);
 			pm.deletePersistent(c);
